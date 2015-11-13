@@ -132,6 +132,9 @@ void pc__trans_fire_event(pc_client_t* client, int ev_type, const char* arg1, co
                     || client->state == PC_ST_DISCONNECTING);
             client->state = PC_ST_CONNECTING;
             break;
+        case PC_EV_CANCEL:
+            client->state = PC_ST_INITED;
+            break;
         case PC_EV_USER_DEFINED_PUSH:
             /* do nothing here */
             break;
