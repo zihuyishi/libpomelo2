@@ -348,13 +348,12 @@ void tcp__conn_done_cb(uv_connect_t* conn, int status)
 
     if (status == UV_ECANCELED) {
         pc_lib_log(PC_LOG_DEBUG, "tcp__conn_done_cb - connect timeout");
-        pc_trans_fire_event(tt->client, PC_EV_CONNECT_ERROR, "Connect Timeout", NULL);
+        pc_trans_fire_event(tt->client, PC_EV_CANCEL, "Connect Cancel", NULL);
     } else {
         pc_lib_log(PC_LOG_DEBUG, "tcp__conn_done_cb - connect error, error: %s", uv_strerror(status));
         pc_trans_fire_event(tt->client, PC_EV_CONNECT_ERROR, "Connect Error", NULL);
+        tt->reconn_fn(tt);
     }
-
-    tt->reconn_fn(tt);
 }
 
 void tcp__write_async_cb(uv_async_t* a)
